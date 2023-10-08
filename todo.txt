@@ -1,0 +1,5 @@
+Improve visuals (CSS)
+Add settings
+    sillhouettes
+    text entry
+    

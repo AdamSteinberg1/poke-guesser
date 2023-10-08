@@ -1,0 +1,15 @@
+h1 {
+    color: blue;
+}
+
+.pokemon-image {
+    max-width: 50%;
+    max-height: 20rem;
+}
+
+body {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
