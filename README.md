@@ -1,2 +1,2 @@
 # poke-guesser
- Who's that pokemon?
+## [Live Demo](https://adamsteinberg1.github.io/poke-guesser/)
