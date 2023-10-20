@@ -1,9 +1,10 @@
 use crate::{
-    models::pokemon::Pokemon,
+    components::starburst::Starburst,
     util::{fetch_rand_pokemons, shuffle},
 };
 use ::yew::prelude::*;
 use futures::FutureExt;
+use gloo::console::log;
 use yew_hooks::{use_async_with_options, use_counter, UseAsyncOptions};
 
 #[function_component]
@@ -28,35 +29,43 @@ pub fn Guesser() -> Html {
         let pokemons = pokemons.clone();
         Callback::from(move |_| {
             if let Some(data) = pokemons.data.as_ref() {
+                is_name_revealed.set(false);
                 if (*counter as usize) < data.len() - 1 {
                     counter.increase();
                 } else {
                     counter.reset();
                     pokemons.update(shuffle(data.clone()));
                 }
-                is_name_revealed.set(false);
             }
         })
     };
 
-    let guesser_core = |pokemon: Pokemon| {
-        html! {
-            <>
-                <img class={classes!("pokemon-image")} src={pokemon.image.clone()}/>
-                <br/>
-                if *is_name_revealed {
-                    <h3>{format!("{}: {}", pokemon.id, pokemon.name)}</h3>
-                    <button type="button" onclick={on_new_pokemon.clone()}>{"Next"}</button>
-                } else {
-                    <button type="button" onclick={on_reveal.clone()}>{"Reveal"}</button>
-                }
-            </>
-        }
-    };
-
-    match (pokemons.error.as_ref(), pokemons.data.as_ref()) {
-        (_, Some(data)) => guesser_core(data[*counter as usize].clone()),
-        (Some(_), _) => html! {<p>{"error :("}</p>},
-        _ => html! {<p>{"loading"}</p>},
-    }
+    pokemons
+        .data
+        .as_ref()
+        .map(|data| {
+            let pokemon = data[*counter as usize].clone();
+            html! {
+                <>
+                    <div class="pokemon-wrapper">
+                        <img src={pokemon.image.clone()}/>
+                        <Starburst/>
+                    </div>
+                    if *is_name_revealed {
+                        <h3>{format!("{}: {}", pokemon.id, pokemon.name)}</h3>
+                        <button type="button" onclick={on_new_pokemon.clone()}>{"Next"}</button>
+                    } else {
+                        <h3>{'\u{00a0}'}</h3> //non-breaking space (&nbsp)
+                        <button type="button" onclick={on_reveal.clone()}>{"Reveal"}</button>
+                    }
+                </>
+            }
+        })
+        .or_else(|| {
+            pokemons.error.as_ref().map(|e| {
+                log!("Error when fetching pokemon data:\n{:?}", e);
+                html! {<p>{"error :("}</p>}
+            })
+        })
+        .unwrap_or(html! {<img class = "loading" src="assets/question_mark.png"/>})
 }

@@ -1,4 +1,4 @@
-use crate::components::guesser::Guesser;
+use crate::components::{guesser::Guesser, title::Title};
 use yew::prelude::*;
 
 mod components;
@@ -9,7 +9,7 @@ mod util;
 pub fn App() -> Html {
     html! {
         <>
-            <h1>{"Who's That Pokémon?"}</h1>
+            <Title/>
             <Guesser/>
         </>
     }
