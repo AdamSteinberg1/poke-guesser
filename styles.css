@@ -69,13 +69,17 @@ body {
     animation-direction: alternate;
 }
 
-h3 {
+.pokemon-name {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 1.8em;
-    color: var(--yellow);
-    -webkit-text-stroke: 0.07em var(--blue);
-    margin: 1rem;
-    font-weight: 1000;
+    height: 4rem;
+    font-size: 2rem;
+    fill: var(--yellow);
+    stroke: var(--blue);
+    stroke-width: 7;
+    stroke-linejoin: round;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    paint-order: stroke;
 }
 
 button {

@@ -51,11 +51,14 @@ pub fn Guesser() -> Html {
                         <img src={pokemon.image.clone()}/>
                         <Starburst/>
                     </div>
+                    <svg class="pokemon-name" xmlns="http://www.w3.org/2000/svg">
+                        <text x="50%" y="50%" visibility={is_name_revealed.then_some("visible").unwrap_or("hidden")}>
+                          {format!("{}: {}", pokemon.id, pokemon.name)}
+                        </text>
+                    </svg>
                     if *is_name_revealed {
-                        <h3>{format!("{}: {}", pokemon.id, pokemon.name)}</h3>
                         <button type="button" onclick={on_new_pokemon.clone()}>{"Next"}</button>
                     } else {
-                        <h3>{'\u{00a0}'}</h3> //non-breaking space (&nbsp)
                         <button type="button" onclick={on_reveal.clone()}>{"Reveal"}</button>
                     }
                 </>

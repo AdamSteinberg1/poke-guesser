@@ -16,20 +16,18 @@ pub fn Starburst() -> Html {
     let points = points(20.0, 50.0);
     let inner_points = points
         .iter()
-        .cloned()
-        .map(|(x, y)| (0.65 * x + 50.0, 0.65 * y + 50.0))
+        .map(|(x, y)| (0.65 * x, 0.65 * y))
         .map(|(x, y)| format!("{},{} ", x, y))
         .collect::<String>();
 
     let outer_points = points
         .into_iter()
-        .map(|(x, y)| (x + 50.0, y + 50.0))
         .map(|(x, y)| format!("{},{} ", x, y))
         .collect::<String>();
 
     html! {
         <svg version="1.1"
-                viewBox="0 0 100 100"
+                viewBox="-50 -50 100 100"
                 xmlns="http://www.w3.org/2000/svg">
 
             <filter id="blur">
