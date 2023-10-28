@@ -1,17 +1,16 @@
 use ::yew::prelude::*;
+use gloo::timers::callback::Interval;
 use rand::{thread_rng, Rng};
-use yew_hooks::use_interval;
 
 #[function_component]
 pub fn Starburst() -> Html {
     let trigger = use_force_update();
     let fps = 10; //frames per second
-    use_interval(
-        move || {
-            trigger.force_update();
-        },
-        1000 / fps,
-    );
+
+    Interval::new(1000 / fps, move || {
+        trigger.force_update();
+    })
+    .forget();
 
     let points = points(20.0, 50.0);
     let inner_points = points
