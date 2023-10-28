@@ -106,3 +106,9 @@ html {
     overflow: hidden;
     margin: 0;
 }
+
+.settings-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

@@ -1,4 +1,8 @@
-use crate::components::{guesser::Guesser, title::Title};
+use crate::{
+    components::{guesser::Guesser, settings_menu::SettingsMenu, title::Title},
+    models::settings::Settings,
+};
+use gloo::console::log;
 use yew::prelude::*;
 
 mod components;
@@ -7,8 +11,19 @@ mod util;
 
 #[function_component]
 pub fn App() -> Html {
+    let settings = use_state(|| Settings::default());
+
+    let on_settings_change = {
+        let settings = settings.clone();
+        Callback::from(move |new_settings: Settings| {
+            settings.set(new_settings);
+        })
+    };
+
+    log!(format!("{:?}", *settings));
     html! {
         <>
+            <SettingsMenu on_settings_change={on_settings_change}/>
             <Title/>
             <Guesser/>
         </>
