@@ -36,6 +36,7 @@ body {
     position: relative;
     text-align: center;
     margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 .upper-title {
@@ -70,7 +71,6 @@ body {
 }
 
 .pokemon-name {
-    font-family: Helvetica, Arial, sans-serif;
     height: 4rem;
     font-size: 2rem;
     fill: var(--yellow);
@@ -105,4 +105,38 @@ html {
     background-size: cover;
     overflow: hidden;
     margin: 0;
+}
+
+.settings-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--yellow);
+    border-color: var(--blue);
+    border-radius: 0.7rem;
+    border-width: 0.1rem;
+    border-style: solid;
+    padding: 0.3rem;
+    margin: 0.3rem;
+    transition: font-size 200ms, border-radius 200ms;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 1.5rem;
+    max-width: fit-content;
+}
+
+.settings-menu svg {
+    width: fit-content;
+    color: var(--blue);
+}
+
+.settings-menu>input {
+    transition: max-height 200ms, opacity 200ms;
+    max-height: 1em;
+}
+
+.settings-menu>label {
+    transition: opacity 20s0ms;
+    color: var(--blue)
 }

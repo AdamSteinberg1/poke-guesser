@@ -1,10 +1,15 @@
-use crate::{components::starburst::Starburst, util::fetch_pokemons};
+use crate::{components::starburst::Starburst, models::settings::Settings, util::fetch_pokemons};
 use ::yew::prelude::*;
 use gloo::console::log;
 use yew::suspense::use_future;
 
+#[derive(PartialEq, Properties)]
+pub struct Props {
+    pub settings: Settings,
+}
+
 #[function_component]
-pub fn Guesser() -> HtmlResult {
+pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
     let is_name_revealed = use_state_eq(|| false);
     let pokemons = use_future(fetch_pokemons)?;
 
@@ -28,13 +33,19 @@ pub fn Guesser() -> HtmlResult {
             html! {<p>{"An error has occurred. 😢"}</p>}
         }
         Ok(ref pokemons) => {
-            let pokemon = is_name_revealed
-                .then(|| pokemons.next())
-                .unwrap_or_else(|| pokemons.current());
+            let pokemon = if *is_name_revealed {
+                pokemons.next()
+            } else {
+                pokemons.current()
+            };
             html! {
                 <>
                     <div class="pokemon-wrapper">
-                        <img src={pokemon.image.clone()}/>
+                        <img src={pokemon.image.clone()}
+                            style={format!("filter: {} drop-shadow(-0.2rem 0.2rem black)",
+                                (settings.silhouette && !(*is_name_revealed))
+                                    .then_some("url(assets/silhouette_filter.svg#filter)")
+                                    .unwrap_or_default())}/>
                         <Starburst/>
                     </div>
                     <svg class="pokemon-name" xmlns="http://www.w3.org/2000/svg">
