@@ -6,11 +6,12 @@ use rand::{thread_rng, Rng};
 pub fn Starburst() -> Html {
     let trigger = use_force_update();
     let fps = 10; //frames per second
-
-    Interval::new(1000 / fps, move || {
-        trigger.force_update();
-    })
-    .forget();
+    use_effect_with((), move |_| {
+        Interval::new(1000 / fps, move || {
+            trigger.force_update();
+        })
+        .forget();
+    });
 
     let points = points(20.0, 50.0);
     let inner_points = points
