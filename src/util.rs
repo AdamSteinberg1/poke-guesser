@@ -1,27 +1,13 @@
-use crate::models::pokemon::Pokemon;
+use crate::models::{pokemon::Pokemon, pokemon_list::PokemonList};
 use anyhow::Result;
 use gloo::net::http::Request;
 use itertools::Itertools;
 
-pub fn shuffle<T>(vec: Vec<T>) -> Vec<T> {
-    use rand::seq::SliceRandom;
-    use rand::thread_rng;
-
-    let mut vec = vec;
-    let mut rng = thread_rng();
-    vec.shuffle(&mut rng);
-    vec
-}
-
-pub async fn fetch_rand_pokemons() -> Result<Vec<Pokemon>> {
-    fetch_pokemons().await.map(shuffle)
-}
-
-async fn fetch_pokemons() -> Result<Vec<Pokemon>> {
+pub async fn fetch_pokemons() -> Result<PokemonList> {
     let url =
         "https://m.bulbapedia.bulbagarden.net/wiki/List_of_Pokémon_by_National_Pokédex_number";
     let response = Request::get(&url).send().await?.text().await?;
-    Ok(parse_pokemons(&response))
+    Ok(PokemonList::new(parse_pokemons(&response)))
 }
 
 fn parse_pokemons(text: &str) -> Vec<Pokemon> {

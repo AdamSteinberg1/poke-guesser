@@ -1,4 +1,4 @@
-#[derive(Default, Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Clone)]
 pub struct Pokemon {
     pub id: u16,
     pub name: String,

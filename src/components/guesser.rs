@@ -1,20 +1,12 @@
-use crate::{
-    components::starburst::Starburst,
-    util::{fetch_rand_pokemons, shuffle},
-};
+use crate::{components::starburst::Starburst, util::fetch_pokemons};
 use ::yew::prelude::*;
-use futures::FutureExt;
 use gloo::console::log;
-use yew_hooks::{use_async_with_options, use_counter, UseAsyncOptions};
+use yew::suspense::use_future;
 
 #[function_component]
-pub fn Guesser() -> Html {
-    let counter = use_counter(0);
+pub fn Guesser() -> HtmlResult {
     let is_name_revealed = use_state_eq(|| false);
-    let pokemons = use_async_with_options(
-        fetch_rand_pokemons().then(|pokemons| async { pokemons.map_err(|e| e.to_string()) }),
-        UseAsyncOptions::enable_auto(),
-    );
+    let pokemons = use_future(fetch_pokemons)?;
 
     let on_reveal = {
         let is_name_revealed = is_name_revealed.clone();
@@ -25,26 +17,20 @@ pub fn Guesser() -> Html {
 
     let on_new_pokemon = {
         let is_name_revealed = is_name_revealed.clone();
-        let counter = counter.clone();
-        let pokemons = pokemons.clone();
         Callback::from(move |_| {
-            if let Some(data) = pokemons.data.as_ref() {
-                is_name_revealed.set(false);
-                if (*counter as usize) < data.len() - 1 {
-                    counter.increase();
-                } else {
-                    counter.reset();
-                    pokemons.update(shuffle(data.clone()));
-                }
-            }
+            is_name_revealed.set(false);
         })
     };
 
-    pokemons
-        .data
-        .as_ref()
-        .map(|data| {
-            let pokemon = data[*counter as usize].clone();
+    Ok(match *pokemons {
+        Err(ref e) => {
+            log!(format!("Error when fetching pokemon data:\n{:?}", e));
+            html! {<p>{"An error has occurred. 😢"}</p>}
+        }
+        Ok(ref pokemons) => {
+            let pokemon = is_name_revealed
+                .then(|| pokemons.next())
+                .unwrap_or_else(|| pokemons.current());
             html! {
                 <>
                     <div class="pokemon-wrapper">
@@ -63,12 +49,6 @@ pub fn Guesser() -> Html {
                     }
                 </>
             }
-        })
-        .or_else(|| {
-            pokemons.error.as_ref().map(|e| {
-                log!("Error when fetching pokemon data:\n{:?}", e);
-                html! {<p>{"error :("}</p>}
-            })
-        })
-        .unwrap_or(html! {<img class = "loading" src="assets/question_mark.png"/>})
+        }
+    })
 }
