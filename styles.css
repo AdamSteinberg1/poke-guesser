@@ -137,6 +137,22 @@ html {
 }
 
 .settings-menu>label {
-    transition: opacity 20s0ms;
+    transition: opacity 200ms;
     color: var(--blue)
+}
+
+.repo-link {
+    color: var(--blue);
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.2rem;
+    margin: 0.3rem;
+    background-color: var(--yellow);
+    border-color: var(--blue);
+    border-radius: 100%;
+    border-width: 0.1rem;
+    border-style: solid;
+    width: 2rem;
+    height: 2rem;
 }

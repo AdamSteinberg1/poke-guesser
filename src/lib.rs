@@ -1,5 +1,7 @@
 use crate::{
-    components::{guesser::Guesser, settings_menu::SettingsMenu, title::Title},
+    components::{
+        guesser::Guesser, repo_link::RepoLink, settings_menu::SettingsMenu, title::Title,
+    },
     models::settings::Settings,
 };
 use gloo::console::log;
@@ -24,6 +26,7 @@ pub fn App() -> Html {
     let fallback = html! {<img class = "loading" src="assets/question_mark.png"/>};
     html! {
         <>
+            <RepoLink/>
             <SettingsMenu on_settings_change={on_settings_change}/>
             <Title/>
             <Suspense {fallback}>
