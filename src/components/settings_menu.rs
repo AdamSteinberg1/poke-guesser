@@ -42,7 +42,7 @@ pub fn SettingsMenu(Props { on_settings_change }: &Props) -> Html {
                     <input
                         type="checkbox" id={id.clone()}
                         onchange={on_change.clone()}
-                        style={collapsed.then_some("max-height:0; margin:0; opacity:0")}/>
+                        style={collapsed.then_some("max-height:0; margin:0; opacity:0; display:none")}/>
                     <label
                         for={id}
                         style={collapsed.then_some("opacity:0")}>
