@@ -1,5 +1,5 @@
 use crate::models::{pokemon::Pokemon, pokemon_list::PokemonList};
-use anyhow::Result;
+use anyhow::{ensure, Result};
 use gloo::net::http::Request;
 use itertools::Itertools;
 
@@ -7,42 +7,30 @@ pub async fn fetch_pokemons() -> Result<PokemonList> {
     let url =
         "https://m.bulbapedia.bulbagarden.net/wiki/List_of_Pokémon_by_National_Pokédex_number";
     let response = Request::get(&url).send().await?.text().await?;
-    Ok(PokemonList::new(parse_pokemons(&response)))
+    let pokemons = parse_pokemons(&response);
+    ensure!(!pokemons.is_empty(), "No pokemon parsed from HTML");
+    Ok(PokemonList::new(pokemons))
 }
 
-fn parse_pokemons(text: &str) -> Vec<Pokemon> {
-    use scraper::Html;
-    use scraper::Selector;
-
-    Html::parse_document(text)
-        .select(&Selector::parse("table.roundy > tbody > tr").unwrap())
+fn parse_pokemons(html: &str) -> Vec<Pokemon> {
+    html.split("<tr style=\"background:#FFF\">\n")
         .filter_map(|row| {
-            let (id, name) = row
-                .select(&Selector::parse("td").unwrap())
-                .step_by(2)
-                .take(2)
-                .filter_map(|cell| cell.text().next().map(String::from))
-                .collect_tuple()?;
-            let image = row
-                .select(&Selector::parse("img").unwrap())
-                .filter_map(|img| {
-                    img.value()
-                        .attr("src")
-                        .and_then(|src| src.rsplit_once("/"))
-                        .map(|(s, _)| format!("https:{}", s.replace("thumb/", "")))
-                })
-                .next()?;
+            let (id, image, name) = row.lines().take(3).collect_tuple()?;
 
-            for field in [&id, &name, &image] {
-                if field.is_empty() {
-                    return None;
-                }
-            }
+            let id = id
+                .split(['<', '>', '#'])
+                .nth(3)?
+                .parse()
+                .ok()
+                .filter(|id| *id > 0)?;
 
-            let id = id.strip_prefix("#")?.parse().ok()?;
-            if id <= 0 {
-                return None;
-            }
+            let name = name.split(['<', '>']).nth(4)?.into();
+
+            let image = image
+                .split('"')
+                .nth(7)?
+                .rsplit_once("/")
+                .map(|(s, _)| String::from("https:") + &s.replace("thumb/", ""))?;
 
             Some(Pokemon { id, name, image })
         })

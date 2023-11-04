@@ -22,7 +22,6 @@ pub fn App() -> Html {
         })
     };
 
-    log!(format!("{:?}", *settings));
     let fallback = html! {<img class = "loading" src="assets/question_mark.png"/>};
     html! {
         <>

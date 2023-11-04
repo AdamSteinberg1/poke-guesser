@@ -46,7 +46,7 @@ impl PokemonList {
         self.pokemons[index].clone()
     }
 
-    pub fn current(&self) -> Pokemon {
+    pub fn peek(&self) -> Pokemon {
         let index = self
             .indices
             .borrow_mut()

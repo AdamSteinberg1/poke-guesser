@@ -36,7 +36,7 @@ pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
             let pokemon = if *is_name_revealed {
                 pokemons.next()
             } else {
-                pokemons.current()
+                pokemons.peek()
             };
             html! {
                 <>
