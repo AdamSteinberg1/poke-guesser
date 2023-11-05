@@ -4,7 +4,6 @@ use crate::{
     },
     models::settings::Settings,
 };
-use gloo::console::log;
 use yew::prelude::*;
 
 mod components;
