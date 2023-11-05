@@ -38,14 +38,16 @@ pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
         }
         Ok(ref pokemons) => {
             let pokemon = if *is_name_revealed {
-                pokemons.next()
+                pokemons.current()
             } else {
-                pokemons.peek()
+                pokemons.next()
             };
+            let next_pokemon = pokemons.peek();
             Ok(html! {
                 <>
-                    <PokemonImage silhouette={settings.silhouette && !(*is_name_revealed)} image={pokemon.image}/>
-                    <PokemonLabel is_revealed={*is_name_revealed} name={pokemon.name} id={pokemon.id}/>
+                    <link rel="prefetch" href={next_pokemon.image.clone()} as="image" />
+                    <PokemonImage silhouette={settings.silhouette && !(*is_name_revealed)} image={pokemon.image.clone()}/>
+                    <PokemonLabel is_revealed={*is_name_revealed} name={pokemon.name.clone()} id={pokemon.id}/>
                     if *is_name_revealed {
                         <button type="button" onclick={on_new_pokemon.clone()}>{"Next"}</button>
                     } else {

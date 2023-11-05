@@ -1,6 +1,7 @@
 use super::pokemon::Pokemon;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
+use std::cell::Cell;
 use std::cell::RefCell;
 use std::iter;
 use std::vec;
@@ -15,6 +16,7 @@ type Indices = RefCell<
 pub struct PokemonList {
     pokemons: Vec<Pokemon>,
     indices: Indices,
+    current_index: Cell<usize>,
 }
 
 impl PokemonList {
@@ -27,32 +29,41 @@ impl PokemonList {
             indices.into_iter()
         };
 
-        let indices = iter::once(pokemons.len())
+        let mut indices = iter::once(pokemons.len())
             .cycle()
             .flat_map(generate_indices)
             .peekable();
+        let current_index = indices
+            .next()
+            .expect("Iterator should always have a next because it is infinite");
         Self {
             pokemons,
+            current_index: Cell::new(current_index),
             indices: RefCell::new(indices),
         }
     }
 
-    pub fn next(&self) -> Pokemon {
+    pub fn next(&self) -> &Pokemon {
         let index = self
             .indices
             .borrow_mut()
             .next()
             .expect("Iterator should always have a next because it is infinite");
-        self.pokemons[index].clone()
+        self.current_index.set(index);
+        &self.pokemons[index]
     }
 
-    pub fn peek(&self) -> Pokemon {
+    pub fn peek(&self) -> &Pokemon {
         let index = self
             .indices
             .borrow_mut()
             .peek()
             .cloned()
             .expect("Iterator should always have a next because it is infinite");
-        self.pokemons[index].clone()
+        &self.pokemons[index]
+    }
+
+    pub fn current(&self) -> &Pokemon {
+        &self.pokemons[self.current_index.get()]
     }
 }
