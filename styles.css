@@ -145,3 +145,17 @@ html {
     width: 2rem;
     height: 2rem;
 }
+
+p {
+    margin-top: 10rem;
+}
+
+p>span {
+    color: var(--blue);
+    background-color: var(--yellow);
+    padding: 1rem;
+    border-radius: 1rem;
+    border-color: var(--blue);
+    border-width: 0.1rem;
+    border-style: solid;
+}

@@ -34,7 +34,7 @@ pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
     match *pokemons {
         Err(ref e) => {
             log!(format!("Error when fetching pokemon data:\n{:?}", e));
-            Ok(html! {<p>{"An error has occurred. 😢"}</p>})
+            Ok(html! {<p><span>{"An error has occurred. 😢"}</span></p>})
         }
         Ok(ref pokemons) => {
             let pokemon = if *is_name_revealed {
