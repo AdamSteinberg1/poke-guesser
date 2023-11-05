@@ -24,7 +24,6 @@ body>:not(script) {
 
 body {
     height: 100vh;
-    overflow: hidden;
     position: relative;
     text-align: center;
     margin: 0;
@@ -95,7 +94,6 @@ html {
 
     background-repeat: no-repeat;
     background-size: cover;
-    overflow: hidden;
     margin: 0;
 }
 

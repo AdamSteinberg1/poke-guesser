@@ -6,7 +6,7 @@ use itertools::Itertools;
 pub async fn fetch_pokemons() -> Result<PokemonList> {
     let url =
         "https://m.bulbapedia.bulbagarden.net/wiki/List_of_Pokémon_by_National_Pokédex_number";
-    let response = Request::get(&url).send().await?.text().await?;
+    let response = Request::get(url).send().await?.text().await?;
     let pokemons = parse_pokemons(&response);
     ensure!(!pokemons.is_empty(), "No pokemon parsed from HTML");
     Ok(PokemonList::new(pokemons))
