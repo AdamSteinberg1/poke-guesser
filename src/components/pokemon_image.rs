@@ -4,7 +4,7 @@ use ::yew::prelude::*;
 #[derive(PartialEq, Properties)]
 pub struct Props {
     pub silhouette: bool,
-    pub image: String,
+    pub image: AttrValue,
 }
 
 #[function_component]

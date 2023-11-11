@@ -159,3 +159,50 @@ p>span {
     border-width: 0.1rem;
     border-style: solid;
 }
+
+@keyframes shake {
+    0% {
+        transform: translate(0rem);
+    }
+
+    25% {
+        transform: translate(0.5rem);
+    }
+
+    75% {
+        transform: translate(-0.5rem);
+    }
+
+    100% {
+        transform: translate(0rem);
+    }
+}
+
+.incorrect-guess {
+    animation: shake 0.2s ease-in-out 0s 2;
+}
+
+.text-guess {
+    display: inline-block;
+    margin-bottom: 1.37rem;
+}
+
+.text-guess>* {
+    font-size: 1.7em;
+    border-color: var(--blue);
+    border-radius: 0.3rem;
+    border-color: var(--blue);
+    border-width: 0.1rem;
+    border-style: solid;
+}
+
+.text-guess>input[type=text] {
+    max-width: 50vw;
+    font-size: 2em;
+    text-align: center;
+}
+
+.text-guess>input[type=button] {
+    color: var(--blue);
+    background-color: var(--yellow);
+}

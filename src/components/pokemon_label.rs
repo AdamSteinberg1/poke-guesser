@@ -3,7 +3,7 @@ use ::yew::prelude::*;
 #[derive(PartialEq, Properties)]
 pub struct Props {
     pub is_revealed: bool,
-    pub name: String,
+    pub name: AttrValue,
     pub id: u16,
 }
 
