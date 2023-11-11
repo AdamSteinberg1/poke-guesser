@@ -1,4 +1,6 @@
 use ::yew::prelude::*;
+use itertools::EitherOrBoth;
+use itertools::Itertools;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlElement;
 use web_sys::HtmlInputElement;
@@ -28,7 +30,7 @@ pub fn TextInput(
             let text_input: HtmlInputElement =
                 target.previous_element_sibling().unwrap().unchecked_into();
             let guess = text_input.value();
-            if guess.trim().eq_ignore_ascii_case(&name) {
+            if check_guess(&guess, &name) {
                 on_reveal.emit(event);
             } else {
                 text_input
@@ -68,4 +70,13 @@ pub fn TextInput(
             }
         </>
     }
+}
+
+fn check_guess(guess: &str, actual: &str) -> bool {
+    let [guess, actual] = [guess, actual].map(|s| s.chars().filter(|c| c.is_ascii_alphanumeric()));
+
+    guess.zip_longest(actual).all(|pair| match pair {
+        EitherOrBoth::Both(guess, actual) => guess.eq_ignore_ascii_case(&actual),
+        _ => false,
+    })
 }

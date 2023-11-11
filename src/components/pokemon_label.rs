@@ -2,6 +2,7 @@ use ::yew::prelude::*;
 
 #[derive(PartialEq, Properties)]
 pub struct Props {
+    #[prop_or(true)]
     pub is_revealed: bool,
     pub name: AttrValue,
     pub id: u16,

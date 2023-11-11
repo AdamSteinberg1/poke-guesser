@@ -54,7 +54,7 @@ pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
             <PokemonImage silhouette={settings.silhouette && !(*is_name_revealed)} image={pokemon.image.clone()}/>
             if settings.text_entry {
                 if *is_name_revealed {
-                    <PokemonLabel is_revealed={*is_name_revealed} name={pokemon.name.clone()} id={pokemon.id}/>
+                    <PokemonLabel name={pokemon.name.clone()} id={pokemon.id}/>
                 }
                 <TextInput
                     is_revealed={*is_name_revealed}
