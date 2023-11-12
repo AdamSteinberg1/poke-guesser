@@ -1,4 +1,9 @@
-use crate::models::{pokemon::Pokemon, pokemon_list::PokemonList};
+use std::str::FromStr;
+
+use crate::models::{
+    pokemon::{Pokemon, PokemonType},
+    pokemon_list::PokemonList,
+};
 use anyhow::{ensure, Result};
 use gloo::net::http::Request;
 use itertools::Itertools;
@@ -15,7 +20,8 @@ pub async fn fetch_pokemons() -> Result<PokemonList> {
 fn parse_pokemons(html: &str) -> Vec<Pokemon> {
     html.split("<tr style=\"background:#FFF\">\n")
         .filter_map(|row| {
-            let (id, image, name) = row.lines().take(3).collect_tuple()?;
+            let (id, image, name, primary_type, secondary_type) =
+                row.lines().take(5).collect_tuple()?;
 
             let id = id
                 .split(['<', '>', '#'])
@@ -32,7 +38,22 @@ fn parse_pokemons(html: &str) -> Vec<Pokemon> {
                 .rsplit_once("/")
                 .map(|(s, _)| String::from("https:") + &s.replace("thumb/", ""))?;
 
-            Some(Pokemon { id, name, image })
+            let primary_type = primary_type
+                .split(['<', '>'])
+                .nth(6)
+                .and_then(|t| PokemonType::from_str(t).ok())?;
+            let secondary_type = secondary_type
+                .split(['<', '>'])
+                .nth(6)
+                .and_then(|t| PokemonType::from_str(t).ok());
+
+            Some(Pokemon {
+                id,
+                name,
+                image,
+                primary_type,
+                secondary_type,
+            })
         })
         .collect()
 }

@@ -23,7 +23,7 @@ body>:not(script) {
 }
 
 body {
-    height: 100vh;
+    height: 100%;
     position: relative;
     text-align: center;
     margin: 0;
@@ -62,7 +62,7 @@ body {
 }
 
 .pokemon-name {
-    height: 4rem;
+    height: 3rem;
     font-size: 2rem;
     fill: var(--yellow);
     stroke: var(--blue);
@@ -95,6 +95,7 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
     margin: 0;
+    min-height: 100vh;
 }
 
 .settings-menu {
@@ -146,11 +147,11 @@ html {
     height: 2rem;
 }
 
-p {
+.error {
     margin-top: 10rem;
 }
 
-p>span {
+.error>span {
     color: var(--blue);
     background-color: var(--yellow);
     padding: 1rem;
@@ -205,4 +206,22 @@ p>span {
 .text-guess>input[type=button] {
     color: var(--blue);
     background-color: var(--yellow);
+}
+
+.pokemon-type>* {
+    padding: 0.5rem;
+    border-color: black;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0px 0px 4px black;
+    margin-left: 0.1rem;
+    margin-right: 0.1rem;
+}
+
+.pokemon-type {
+    margin-top: 0.3rem;
+    margin-bottom: 2rem;
 }

@@ -8,7 +8,7 @@ use crate::{
 };
 use ::yew::prelude::*;
 use futures::TryFutureExt;
-use gloo::console::error;
+use gloo::console::{error, log};
 use std::rc::Rc;
 use yew::suspense::use_future;
 
@@ -26,7 +26,7 @@ pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
         Ok(ref pokemons) => Rc::clone(pokemons),
         Err(ref e) => {
             error!(format!("Error when fetching pokemon data:\n{:?}", e));
-            return Ok(html! {<p><span>{"An error has occurred. 😢"}</span></p>});
+            return Ok(html! {<p class="error"><span>{"An error has occurred. 😢"}</span></p>});
         }
     };
 
@@ -52,17 +52,21 @@ pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
         <>
             <link rel="prefetch" href={next_pokemon.image.clone()} as="image" />
             <PokemonImage silhouette={settings.silhouette && !(*is_name_revealed)} image={pokemon.image.clone()}/>
+            if !settings.text_entry || *is_name_revealed {
+                    <PokemonLabel
+                        is_revealed={*is_name_revealed}
+                        name={pokemon.name.clone()}
+                        id={pokemon.id}
+                        primary_type={pokemon.primary_type.clone()}
+                        secondary_type={pokemon.secondary_type.clone()}/>
+            }
             if settings.text_entry {
-                if *is_name_revealed {
-                    <PokemonLabel name={pokemon.name.clone()} id={pokemon.id}/>
-                }
                 <TextInput
                     is_revealed={*is_name_revealed}
                     {on_reveal}
                     {on_new_pokemon}
                     name={pokemon.name.clone()}/>
             } else {
-                <PokemonLabel is_revealed={*is_name_revealed} name={pokemon.name.clone()} id={pokemon.id}/>
                 <ButtonInput
                     is_revealed={*is_name_revealed}
                     {on_reveal}
