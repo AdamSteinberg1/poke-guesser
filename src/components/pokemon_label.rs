@@ -7,7 +7,6 @@ pub struct Props {
     #[prop_or(true)]
     pub is_revealed: bool,
     pub name: AttrValue,
-    pub id: u16,
     pub primary_type: PokemonType,
     pub secondary_type: Option<PokemonType>,
 }
@@ -16,7 +15,6 @@ pub struct Props {
 pub fn PokemonLabel(
     Props {
         is_revealed,
-        id,
         name,
         primary_type,
         secondary_type,

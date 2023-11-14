@@ -64,7 +64,7 @@ pub fn TextInput(
             } else {
                 <div class="text-guess" {onanimationend}>
                     <input type="text" id="guess" onkeydown={onkeydown.clone()}/>
-                    <input type="button" id="submit" value="🡆" onclick={on_submit} {onkeydown}/>
+                    <input type="image" id="submit" src="assets/arrow-right.svg" onclick={on_submit} {onkeydown}/>
                 </div>
                 <button type="button" onclick={on_reveal.clone()}>{"Reveal"}</button>
             }

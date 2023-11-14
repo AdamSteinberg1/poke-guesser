@@ -66,14 +66,12 @@ pub fn SettingsMenu(Props { on_settings_change }: &Props) -> Html {
         })
     };
 
-    let gear = Html::from_html_unchecked(include_str!("../../assets/settings.svg").into());
-    let x = Html::from_html_unchecked(include_str!("../../assets/x.svg").into());
     html! {
         <div class="settings-menu" style={collapsed.then_some("font-size:0; border-radius:100%;")}>
             if *collapsed {
-                <span onclick={on_expand}>{gear}</span>
+                <img onclick={on_expand} src="assets/settings.svg"/>
             } else {
-                <span onclick={on_collapse}>{x}</span>
+                <img onclick={on_collapse} src="assets/x.svg"/>
             }
             {menu_content}
         </div>

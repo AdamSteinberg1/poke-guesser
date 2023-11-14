@@ -23,12 +23,10 @@ fn parse_pokemons(html: &str) -> Vec<Pokemon> {
             let (id, image, name, primary_type, secondary_type) =
                 row.lines().take(5).collect_tuple()?;
 
-            let id = id
-                .split(['<', '>', '#'])
-                .nth(3)?
-                .parse()
-                .ok()
-                .filter(|id| *id > 0)?;
+            let id = id.split(['<', '>', '#']).nth(3)?.parse::<u16>().ok()?;
+            if id <= 0 {
+                return None;
+            }
 
             let name = name.split(['<', '>']).nth(4)?.into();
 
@@ -42,13 +40,13 @@ fn parse_pokemons(html: &str) -> Vec<Pokemon> {
                 .split(['<', '>'])
                 .nth(6)
                 .and_then(|t| PokemonType::from_str(t).ok())?;
+
             let secondary_type = secondary_type
                 .split(['<', '>'])
                 .nth(6)
                 .and_then(|t| PokemonType::from_str(t).ok());
 
             Some(Pokemon {
-                id,
                 name,
                 image,
                 primary_type,

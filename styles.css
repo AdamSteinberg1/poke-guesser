@@ -62,7 +62,7 @@ body {
 }
 
 .pokemon-name {
-    height: 3rem;
+    height: 3.5rem;
     font-size: 2rem;
     fill: var(--yellow);
     stroke: var(--blue);
@@ -184,13 +184,13 @@ html {
 }
 
 .text-guess {
-    display: inline-block;
     margin-bottom: 1.37rem;
+    display: inline-flex;
+    height: 3rem;
 }
 
 .text-guess>* {
     font-size: 1.7em;
-    border-color: var(--blue);
     border-radius: 0.3rem;
     border-color: var(--blue);
     border-width: 0.1rem;
@@ -203,9 +203,9 @@ html {
     text-align: center;
 }
 
-.text-guess>input[type=button] {
-    color: var(--blue);
+.text-guess>input[type=image] {
     background-color: var(--yellow);
+    padding: 0 0.5rem;
 }
 
 .pokemon-type>* {

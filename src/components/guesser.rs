@@ -8,7 +8,7 @@ use crate::{
 };
 use ::yew::prelude::*;
 use futures::TryFutureExt;
-use gloo::console::{error, log};
+use gloo::console::error;
 use std::rc::Rc;
 use yew::suspense::use_future;
 
@@ -56,7 +56,6 @@ pub fn Guesser(Props { settings }: &Props) -> HtmlResult {
                     <PokemonLabel
                         is_revealed={*is_name_revealed}
                         name={pokemon.name.clone()}
-                        id={pokemon.id}
                         primary_type={pokemon.primary_type.clone()}
                         secondary_type={pokemon.secondary_type.clone()}/>
             }
