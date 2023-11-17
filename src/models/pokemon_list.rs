@@ -8,9 +8,7 @@ use std::vec;
 
 type GenerateIndices = fn(usize) -> vec::IntoIter<usize>;
 type Indices = RefCell<
-    iter::Peekable<
-        iter::FlatMap<iter::Cycle<iter::Once<usize>>, vec::IntoIter<usize>, GenerateIndices>,
-    >,
+    iter::Peekable<iter::FlatMap<iter::Repeat<usize>, vec::IntoIter<usize>, GenerateIndices>>,
 >;
 
 pub struct PokemonList {
@@ -22,6 +20,7 @@ pub struct PokemonList {
 impl PokemonList {
     pub fn new(pokemons: impl IntoIterator<Item = Pokemon>) -> Self {
         let pokemons: Vec<_> = pokemons.into_iter().collect();
+        assert!(!pokemons.is_empty(), "PokemonList cannot be created empty");
 
         let generate_indices: GenerateIndices = |len: usize| {
             let mut indices: Vec<_> = (0..len).collect();
@@ -29,8 +28,7 @@ impl PokemonList {
             indices.into_iter()
         };
 
-        let mut indices = iter::once(pokemons.len())
-            .cycle()
+        let mut indices = iter::repeat(pokemons.len())
             .flat_map(generate_indices)
             .peekable();
         let current_index = indices
