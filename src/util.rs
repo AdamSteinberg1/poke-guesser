@@ -34,7 +34,7 @@ fn parse_pokemons(html: &str) -> Vec<Pokemon> {
                 .split('"')
                 .nth(7)?
                 .rsplit_once("/")
-                .map(|(s, _)| String::from("https:") + &s.replace("thumb/", ""))?;
+                .map(|(s, _)| s.replace("thumb/", ""))?;
 
             let primary_type = primary_type
                 .split(['<', '>'])
