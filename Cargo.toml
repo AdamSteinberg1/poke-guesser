@@ -16,3 +16,4 @@ structmap-derive = "0.1.6"
 wasm-bindgen = "0.2.92"
 yew = { version = "0.21.0", features = ["csr"] }
 strum = { version = "0.26.2", features = ["derive"] }
+regex = "1.12.2"
