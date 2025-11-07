@@ -52,8 +52,11 @@ fn parse_pokemons(html: &str) -> Vec<Pokemon> {
 
 fn without_tags(html: &str) -> Option<String> {
     static RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"<[^>]*>").unwrap());
-    let parsed = RE.replace_all(html, "").trim().to_string();
-    Some(parsed).filter(|s| !s.is_empty())
+
+    RE.split(html)
+        .map(str::trim)
+        .find(|s| !s.is_empty())
+        .map(str::to_string)
 }
 
 fn extract_src(html: &str) -> Option<String> {
